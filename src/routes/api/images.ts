@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import sharp from 'sharp';
+import fs from 'fs';
 
 const images = express.Router();
 
@@ -17,15 +18,21 @@ images.get('/', async (req, res) => {
     return res.status(400).send('Image dimensions not found or invalid!');
   }
 
-  const imagePath = path.resolve(__dirname, '../../images', `${filename}.jpg`);
-  const thumbImagePath = path.resolve(
+  const originalImagePath = path.resolve(
     __dirname,
-    '../../images/thumbs',
-    filename + `_thumb.jpg`
+    '../../../src/assets',
+    filename + '.jpg'
   );
 
+  const thumbFolderPath = path.resolve(__dirname, '../../images');
+  const thumbImagePath = path.join(thumbFolderPath, `${filename}.jpg`);
+
+  if (!fs.existsSync(thumbFolderPath)) {
+    fs.mkdirSync(thumbFolderPath, { recursive: true });
+  }
+
   try {
-    await sharp(imagePath).resize(width, height).toFile(thumbImagePath);
+    await sharp(originalImagePath).resize(width, height).toFile(thumbImagePath);
 
     res.sendFile(thumbImagePath, (err) => {
       if (err) {
