@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import resizeImage from '../../utils/imageResizer';
+import fs from 'fs';
 
 const images = express.Router();
 
@@ -24,10 +25,18 @@ images.get('/', async (req, res) => {
   );
 
   const thumbFolderPath = path.resolve(__dirname, '../../images');
-  const thumbImagePath = path.join(thumbFolderPath, `${filename}.jpg`);
+  const thumbImagePath = path.join(
+    thumbFolderPath,
+    `${filename}_${width}_${height}.jpg`
+  );
 
   try {
+    if (fs.existsSync(thumbImagePath)) {
+      return res.sendFile(thumbImagePath);
+    }
+
     await resizeImage(originalImagePath, width, height, thumbImagePath);
+
     res.sendFile(thumbImagePath, (err) => {
       if (err) {
         res.status(404).send('Error while creating thumbnail');
