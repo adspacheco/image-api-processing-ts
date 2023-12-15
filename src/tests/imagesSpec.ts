@@ -9,14 +9,14 @@ describe('GET /api', () => {
 });
 
 describe('GET to /api/images', () => {
-  const fileName = 'fjord';
+  const filename = 'fjord';
 
   it('should return an resized image when valid params passed', async () => {
     const width = 100;
     const height = 100;
 
     const res = await request(app).get(
-      `/api/images?filename=${fileName}&width=${width}&height=${height}`
+      `/api/images?filename=${filename}&width=${width}&height=${height}`
     );
 
     expect(res.status).toBe(200);
@@ -24,7 +24,7 @@ describe('GET to /api/images', () => {
   });
 
   it('should return 400 when no params passed', async () => {
-    const res = await request(app).get(`/api/images?filename=${fileName}`);
+    const res = await request(app).get(`/api/images?filename=${filename}`);
     expect(res.status).toBe(400);
   });
 });
