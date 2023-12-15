@@ -1,7 +1,6 @@
 import express from 'express';
 import path from 'path';
 import resizeImage from '../../utils/resizeImage';
-import fs from 'fs';
 
 const images = express.Router();
 
@@ -31,10 +30,6 @@ images.get('/', async (req, res) => {
   );
 
   try {
-    if (fs.existsSync(thumbImagePath)) {
-      return res.sendFile(thumbImagePath);
-    }
-
     await resizeImage(originalImagePath, width, height, thumbImagePath);
 
     res.sendFile(thumbImagePath, (err) => {
