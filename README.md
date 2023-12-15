@@ -80,7 +80,7 @@ For development:
 
 2. In a separate terminal window, start the server by running:
    ```
-   node dist/index.js
+   DEBUG=http node dist/index.js
    ```
    This starts the server and makes the API available at `localhost:3000` (or another port if configured differently in your project).
 
