@@ -38,7 +38,6 @@ images.get('/', async (req, res) => {
       }
     });
   } catch (error) {
-    console.warn(error);
     res.status(500).send('Error processing image');
   }
 });
